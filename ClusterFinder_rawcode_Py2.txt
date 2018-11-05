@@ -2,7 +2,9 @@
 
 #A quick, visual way to spot clusters in Gaia DR2 data, using distance, proper motion, and error cuts!
 
-#Instructions: Get Gaia DR2 Vizier data by querying Gaia DR2, typing in some object or coordiantes, picking a search radius (I like 2 deg), deselecting all parameters, selecting Plx, e_Plx, pmRA, e_pmRA, pmDE, e_pmDE, Gmag, e_Gmag, BPmag, e_BPmag, RPmag, e_RPmag, RV, and e_RV, and outputting unlimited values as tab separated values file type. Should show up in your downloads folder (specify path in Setup below). Place Padova isochrones files PadovaGaiaDR2Isochrones.dat in data folder (also specify path in Setup below). Trim the file with viztrim function. Explore distance, proper motion, and error cuts with plotcut function until you see a bunch of stars of one color in distance, proper motion in RA, and proper motion in Dec. Produce a data file and final plot with finalcut function. Plot Gaia DR2 BP-RP color-magnitude diagram of the stars. Note that dim scattered points near bottom are probably garbage. Happy hunting!
+#Instructions: Get Gaia DR2 Vizier data by querying Gaia DR2, typing in some object or coordiantes, picking a search radius (I like 2 deg), deselecting all parameters, selecting Plx, e_Plx, pmRA, e_pmRA, pmDE, e_pmDE, Gmag, e_Gmag, BPmag, e_BPmag, RPmag, e_RPmag, RV, and e_RV, and outputting unlimited values as tab separated values file type. If you know the approximate distance range to your target range, you are encouraged to enter a rough, somewhat generous parallax range into Vizier, as this will greatly cut down on the perhaps irrelevant targets and make the data file way more manageable. The .tsv file should show up in your downloads folder (specify path in Setup below). Place Padova isochrones files PadovaGaiaDR2Isochrones.dat in data folder (also specify path in Setup below). Trim the file with viztrim function. Explore distance, proper motion, and error cuts with plotcut function until you see a bunch of stars of one color in distance, proper motion in RA, and proper motion in Dec. Produce a data file and final plot with finalcut function. Plot Gaia DR2 BP-RP color-magnitude diagram of the stars. Note that dim scattered points near bottom are probably garbage. Happy hunting!
+
+#If you use this code and find it helpful, please cite Yep & White 2019, in prep.
 
 ## Setup
 
@@ -39,13 +41,14 @@ def viztrim(vizfilename,objname): #'vizier filename','object name'; expects file
     try:
         datend=dt[int(2./3.*len(dt)):].index('#N')+int(2./3.*len(dt))-2 #assumes data set is reasonably long. If not, you can replace 2./3. with, say, 1./2. or less.
     except ValueError:
-        datend=len(dt)
+        datend=len(dt)-1
     print labind,datend,'\n'
-    pind=list(range(labind,labind+4))+list(range(datend-1,datend+3))
+    pind=list(range(labind,labind+4))+list(range(datend-1,datend))
     for i in pind: #just to check it's right
         print dat[i][:-1] #just to check it's right
         if i==labind+3:
             print '...'
+    print '---end---'
     
     if exists(ddir+'gaiasearch_'+objname+'.dat'):
         rewri=input("You've already trimmed Vizier Gaia DR2 data for this object name. Rewrite? 'y'/'n'\n")
@@ -248,9 +251,9 @@ def colmagBR(objname,dist):
 
 ## Sample
 
-#Files: Place asu(16)_CG30.tsv, in default Downloads folder (I use a Mac). Place PadovaGaiaDR2Isochrones in chosen data folder.
+#Files: Place asu_CG30.tsv, in default Downloads folder (I use a Mac). Place PadovaGaiaDR2Isochrones in chosen data folder.
 
-viztrim('asu(16)_CG30','CG30test')
+viztrim('asu_CG30','CG30test')
 
 CG30pars=plotcut('CG30test',340.,390.,-8.5,-5.,9.5,12.5,0.1,0.16,'dist') #using median errors for G mag 17 as detailed in Appendix C of Lindegren et al. 2018
 
