@@ -236,8 +236,8 @@ def colmagBR(objname,dist):
     plt.figure(figsize=(10,6))
     
     #Padova:
-    plt.plot((Bmodp-Rmodp)[t1gyr][:-10],Bmodp[t1gyr][:-10]-2.5*np.log10(100./(290.**2.)),label='1 Gyr')
-    plt.plot((Bmodp-Rmodp)[t4myr][:-40],Bmodp[t4myr][:-40]-2.5*np.log10(100./(290.**2.)),label='1 Myr')
+    plt.plot((Bmodp-Rmodp)[t1gyr][:-10],Bmodp[t1gyr][:-10]-2.5*np.log10(100./(dist**2.)),label='1 Gyr')
+    plt.plot((Bmodp-Rmodp)[t4myr][:-40],Bmodp[t4myr][:-40]-2.5*np.log10(100./(dist**2.)),label='1 Myr')
 
     #plt.plot(((np.array(B)-np.array(R))[1],R[20]),alpha=0.0,label=str(dist)+' pc')
     
